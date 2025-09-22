@@ -9,8 +9,8 @@
                 <field name="journal_code" invisible="1"/>
             </xpath>
 
-            <!-- Adiciona campo Forma de Pagamento abaixo do campo Cliente -->
-            <xpath expr="//field[@name='partner_id']" position="after">
+            <!-- Adiciona campo Forma de Pagamento antes da Referência de Pagamento -->
+            <xpath expr="//field[@name='payment_reference']" position="before">
                 <field name="fr_payment_journal_id"
                        required="journal_code == 'FR'"
                        invisible="journal_code != 'FR'"/>
