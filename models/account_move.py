@@ -15,8 +15,8 @@ class AccountMove(models.Model):
 
     journal_code = fields.Char(
         related="journal_id.code",
-        store=False,
-        readonly=True
+        store=True,
+        readonly=True,
     )
 
     @api.constrains("journal_id", "fr_payment_journal_id")
@@ -25,7 +25,7 @@ class AccountMove(models.Model):
         Garante que nas Facturas/Recibo (diário FR) a Forma de Pagamento é obrigatória.
         """
         for move in self:
-            if move.journal_id and move.journal_id.code == "FR" and not move.fr_payment_journal_id:
+            if move.journal_id.code == "FR" and not move.fr_payment_journal_id:
                 raise ValidationError(_("É obrigatório selecionar a Forma de Pagamento nas Facturas/Recibo."))
 
     def action_post(self):
@@ -47,7 +47,7 @@ class AccountMove(models.Model):
                     "date": move.invoice_date or fields.Date.context_today(self),
                 }
                 payment = self.env["account.payment"].create(payment_vals)
-                payment.action_confirm()
+                payment.action_post()
 
                 # Reconciliar automaticamente
                 (payment.line_ids + move.line_ids).filtered(

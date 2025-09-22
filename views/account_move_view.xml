@@ -12,8 +12,8 @@
             <!-- Adiciona campo Forma de Pagamento abaixo do campo Cliente -->
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="fr_payment_journal_id"
-                       attrs="{'required': [('journal_code','=','FR')],
-                               'invisible': [('journal_code','!=','FR')]}" />
+                       required="journal_code == 'FR'"
+                       invisible="journal_code != 'FR'"/>
             </xpath>
         </field>
     </record>
