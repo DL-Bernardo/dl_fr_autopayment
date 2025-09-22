@@ -13,28 +13,28 @@ class AccountMove(models.Model):
         help="Seleciona a forma de pagamento usada no caso de Factura/Recibo."
     )
 
-    is_fr_journal = fields.Boolean(
-        related="journal_id.is_fr_journal",
+    journal_code = fields.Char(
+        related="journal_id.code",
         store=True,
-        readonly=True
+        readonly=True,
     )
 
     @api.constrains("journal_id", "fr_payment_journal_id")
     def _check_fr_payment_required(self):
         """
-        Garante que nos diários de Fatura/Recibo a Forma de Pagamento é obrigatória.
+        Garante que nas Facturas/Recibo (diário FR) a Forma de Pagamento é obrigatória.
         """
         for move in self:
-            if move.is_fr_journal and not move.fr_payment_journal_id:
+            if move.journal_id.code == "FR" and not move.fr_payment_journal_id:
                 raise ValidationError(_("É obrigatório selecionar a Forma de Pagamento nas Facturas/Recibo."))
 
     def action_post(self):
         """
-        Ao validar uma Fatura/Recibo, cria um pagamento automático.
+        Ao validar Factura/Recibo (FR), cria pagamento automático.
         """
         res = super(AccountMove, self).action_post()
         for move in self:
-            if move.is_fr_journal and move.fr_payment_journal_id:
+            if move.journal_id.code == "FR" and move.fr_payment_journal_id:
                 # Criar pagamento automático
                 payment_vals = {
                     "payment_type": "inbound",

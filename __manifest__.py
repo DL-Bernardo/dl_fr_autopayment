@@ -5,7 +5,6 @@
     'summary': 'Pagamentos automáticos para Facturas/Recibo (FR)',
     'depends': ['account'],
     'data': [
-        'views/account_journal_view.xml',
         'views/account_move_view.xml',
     ],
     'installable': True,

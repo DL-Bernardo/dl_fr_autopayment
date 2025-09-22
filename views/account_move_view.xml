@@ -6,14 +6,14 @@
         <field name="arch" type="xml">
             <!-- Campo técnico (invisível) para controlar condições -->
             <xpath expr="//sheet" position="inside">
-                <field name="is_fr_journal" invisible="1"/>
+                <field name="journal_code" invisible="1"/>
             </xpath>
 
             <!-- Adiciona campo Forma de Pagamento abaixo do campo Cliente -->
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="fr_payment_journal_id"
-                       required="is_fr_journal"
-                       invisible="not is_fr_journal"/>
+                       required="journal_code == 'FR'"
+                       invisible="journal_code != 'FR'"/>
             </xpath>
         </field>
     </record>
