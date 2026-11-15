@@ -35,6 +35,6 @@ Key Features
     'installable': True,
     'application': False,
     'auto_install': False,
-    'price': 0.0,
-    'currency': 'EUR',
+    'price': 16.0,
+    'currency': 'USD',
 }
